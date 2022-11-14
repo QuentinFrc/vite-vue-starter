@@ -12,7 +12,7 @@ defineProps({
 			<h1>{{ title }}</h1>
 		</div>
 		<div class="header-part header-right">
-
+			Header aside
 		</div>
 	</header>
 </template>
