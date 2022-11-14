@@ -1,0 +1,37 @@
+@use "../variables" as vr;
+
+@mixin media-up-breakpoint($breakpoint) {
+  $min: breakpoint-min($breakpoint);
+  @if $min {
+	@media (min-width: $min) {
+	  @content;
+	}
+  } @else {
+	@content;
+  }
+}
+
+@mixin media-down-breakpoint($breakpoint) {
+  $max: breakpoint-max($breakpoint);
+  @if $max {
+	@media (max-width: $max) {
+	  @content;
+	}
+  } @else {
+	@content;
+  }
+}
+
+@function breakpoint-infix($name) {
+  @return if(breakpoint-min($name) == null, "", "-#{$name}");
+}
+
+@function breakpoint-min($name) {
+  $min: map-get(vr.$grid-breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function breakpoint-max($name) {
+  $max: map-get(vr.$grid-breakpoints, $name);
+  @return if($max and $max > 0, $max - .02, null);
+}

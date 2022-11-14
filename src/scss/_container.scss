@@ -1,0 +1,39 @@
+@use "variables" as vr;
+@use "mixins" as mx;
+
+
+.container-fluid,
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+@each $breakpoint, $max-width in vr.$container-max-widths {
+  .container-#{$breakpoint} {
+	@extend .container-fluid;
+  }
+
+  @include mx.media-up-breakpoint($breakpoint) {
+	%responsive-container-#{$breakpoint} {
+	  max-width: $max-width;
+	}
+
+	// Extend each breakpoint which is smaller or equal to the current breakpoint
+	$extend-breakpoint: true;
+
+	@each $name, $width in vr.$grid-breakpoints {
+	  @if ($extend-breakpoint) {
+		.container#{mx.breakpoint-infix($name)} {
+		  @extend %responsive-container-#{$breakpoint};
+		}
+
+		// Once the current breakpoint is reached, stop extending
+		@if ($breakpoint == $name) {
+		  $extend-breakpoint: false;
+		}
+	  }
+	}
+  }
+}
